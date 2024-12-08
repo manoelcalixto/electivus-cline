@@ -25,7 +25,8 @@ export class OpenAiNativeHandler implements ApiHandler {
 	async *createMessage(systemPrompt: string, messages: Anthropic.Messages.MessageParam[]): ApiStream {
 		switch (this.getModel().id) {
 			case "o1-preview":
-			case "o1-mini": {
+			case "o1-mini": 
+			case "o1": {
 				// o1 doesnt support streaming, non-1 temp, or system prompt
 				const response = await this.client.chat.completions.create({
 					model: this.getModel().id,

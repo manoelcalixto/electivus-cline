@@ -1,5 +1,10 @@
 # Change Log
 
+## [2.1.7]
+
+- Update dependencies to latest versions
+- Improve system stability and performance
+
 ## [2.1.6]
 
 - Add LM Studio as an API provider option (make sure to start the LM Studio server to use it with the extension!)
@@ -122,7 +127,7 @@
 
 - You can now use '@' in the textarea to add context!
     - @url: Paste in a URL for the extension to fetch and convert to markdown, useful when you want to give Claude the latest docs!
-    - @problems: Add workspace errors and warnings for Claude to fix, no more back-and-forth about debugging
+    - Workspace Problems (see below for diagnostics): Add workspace errors and warnings for Claude to fix, no more back-and-forth about debugging
     - @file: Adds a file's contents so you don't have to waste API requests approving read file (+ type to search files)
     - @folder: Adds folder's files all at once to speed up your workflow even more
 

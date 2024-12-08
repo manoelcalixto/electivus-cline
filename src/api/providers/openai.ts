@@ -32,12 +32,33 @@ export class OpenAiHandler implements ApiHandler {
 	}
 
 	async *createMessage(systemPrompt: string, messages: Anthropic.Messages.MessageParam[]): ApiStream {
+		const modelId = this.options.openAiModelId ?? ""
+		
+		// Handle o1 family models which don't support streaming, non-1 temp, or system prompt
+		if (modelId === "o1-preview" || modelId === "o1-mini" || modelId === "o1") {
+			const response = await this.client.chat.completions.create({
+				model: modelId,
+				messages: [{ role: "user", content: systemPrompt }, ...convertToOpenAiMessages(messages)],
+			})
+			yield {
+				type: "text",
+				text: response.choices[0]?.message.content || "",
+			}
+			yield {
+				type: "usage",
+				inputTokens: response.usage?.prompt_tokens || 0,
+				outputTokens: response.usage?.completion_tokens || 0,
+			}
+			return
+		}
+
+		// Handle other models with streaming support
 		const openAiMessages: OpenAI.Chat.ChatCompletionMessageParam[] = [
 			{ role: "system", content: systemPrompt },
 			...convertToOpenAiMessages(messages),
 		]
 		const stream = await this.client.chat.completions.create({
-			model: this.options.openAiModelId ?? "",
+			model: modelId,
 			messages: openAiMessages,
 			temperature: 0,
 			stream: true,
