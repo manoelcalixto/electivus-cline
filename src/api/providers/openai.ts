@@ -35,7 +35,7 @@ export class OpenAiHandler implements ApiHandler {
 		const modelId = this.options.openAiModelId ?? ""
 		
 		// Handle o1 family models which don't support streaming, non-1 temp, or system prompt
-		if (modelId === "o1-preview" || modelId === "o1-mini" || modelId === "o1") {
+		if (modelId === "o1-preview" || modelId === "o1-mini" || modelId === "o1" ||  modelId === "o1-pro") {
 			const response = await this.client.chat.completions.create({
 				model: modelId,
 				messages: [{ role: "user", content: systemPrompt }, ...convertToOpenAiMessages(messages)],

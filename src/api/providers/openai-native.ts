@@ -26,6 +26,7 @@ export class OpenAiNativeHandler implements ApiHandler {
 		switch (this.getModel().id) {
 			case "o1-preview":
 			case "o1-mini": 
+			case "o1-pro":
 			case "o1": {
 				// o1 doesnt support streaming, non-1 temp, or system prompt
 				const response = await this.client.chat.completions.create({
